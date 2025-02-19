@@ -4,6 +4,8 @@
 
 <h3><a href="https://app.powerbi.com/groups/me/reports/732ae5dd-6c37-46d7-a5f2-c5045b8dfe7a/f97067be56947a9404a1?experience=power-bi"> Acesse o Dashboard aqui</a></h3>
 
+<hr>
+
 <h3>Objetivos</h3>
 
 Analisar as vendas de videogames para identificar tendências, comparações e insights relevantes sobre o mercado de games.
