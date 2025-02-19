@@ -64,17 +64,17 @@ As principais colunas são:
 
 <h4>Estruturação do Relatório</h4>
 
-O relatório é dividido em três páginas contendo análises específicas.
+O relatório é dividido em duas páginas contendo análises específicas.
 
-<b>Visão Geral</b>
+<h2><b>Visão Geral</b></h2>
 
 - Objetivo: Apresentar um panorama geral das vendas de videogames.
 
 - Gráficos e Elementos contidos na página:
 
-<b>Card – Total de Vendas Globais</b>
+<b>Cartão</b>
 
-Medida DAX contida no gráfico:
+Medida em DAX contida no gráfico:
 
 ```python
 TotalVendasGlobais = SUM(vgsales[Global_Sales])
@@ -83,11 +83,11 @@ TotalVendasGlobais = SUM(vgsales[Global_Sales])
 
 <hr>
 
-<b>ard - Gênero de Jogo mais Vendido</b>
+<b>Cartão</b>
 
 Exibe o Gênero de jogo mais vendido
 
-Medida contida no Gráfico:
+Medida em DAX contida no Gráfico:
 
 ```python
 Genero Mais Vendido = 
@@ -106,11 +106,11 @@ RETURN
 
 <hr>
 
-<b>Card - Plataforma de Console Mais vendido</b>
+<b>Cartão</b>
 
 Exibe a plataforma de console mais vendida
 
-Medida contida no Gráfico:
+Medida em DAX contida no Gráfico:
 
 ```python
 Plataforma Mais Vendida = 
@@ -129,7 +129,7 @@ RETURN
 
 <hr>
 
-<b>Gráfico de Barras Empilhadas – Total de Vendas Por Nome do Jogo</b>
+<b>Gráfico de Barras Empilhadas</b>
 
 Exibe os jogos com maior volume de vendas.
 
@@ -139,7 +139,7 @@ Eixo X: SUM (Global_Sales)
 
 <hr>
 
-<b>Gráfico de Barras Empilhadas - Venda de Plataformas por Região</b>
+<b>Gráfico de Barras Empilhadas</b>
 
 Exibe as plataformas com maior volume de vendas.
 
@@ -149,143 +149,113 @@ Eixo X: NA Sales, EU Sales, JP Sales, Other Sales
 
 <hr>
 
-<b>Gráfico de Linha - Vendas Totais por Ano</b>
+<b>Gráfico de Linha</b>
 
+Exibe as vendas totais por ano.
 
+Eixo X: Year(Ano)
 
-Gráfico de Pizza – Participação de Mercado por Plataforma
+Eixo Y: Total Vendas Globais
 
-Demonstra o percentual de vendas de cada plataforma.
+Medida em DAX contida no gráfico:
 
-Fatias: Platform
+```python
+Total Vendas Globais = SUM(vgsales[Global_Sales])
+#Exibe as Vendas Totais
+```
 
-Valores: SUM(Global_Sales)
+<hr>
 
+<b>Gráfico de colunas empilhadas</b>
 
+Exibe as Vendas totais por Plataforma
 
-3.2. Página: Análise por Plataforma
-Objetivo: Comparar o desempenho das plataformas.
-Gráficos e Elementos:
-Gráfico de Linhas – Vendas por Ano e Plataforma:
-Eixo X: Year
-Eixo Y: SUM(Global_Sales)
-Legenda: Platform
-Explicação: Mostra a evolução de vendas para cada plataforma ao longo do tempo.
+Eixo X: Plataform
 
-Gráfico de Barras Empilhadas – Vendas por Plataforma e Região:
-Eixo Y: Platform
-Valores: NA_Sales, EU_Sales, JP_Sales, Other_Sales
-Explicação: Evidencia em quais regiões cada plataforma performa melhor.
+Eixo Y: Total Vendas Globais (Medida)
 
-Card – Plataforma Mais Vendida:
-Medida DAX:
+<hr>
 
-DAX
-Copiar
-Editar
-PlataformaMaisVendida = 
-VAR TabelaPlataformas = 
-    SUMMARIZE(
-        vgsales, 
-        vgsales[Platform],
-        "TotalVendas", SUM(vgsales[Global_Sales])
-    )
-VAR TopPlataforma = 
-    TOPN(1, TabelaPlataformas, [TotalVendas], DESC)
-RETURN
-    MAXX(TopPlataforma, vgsales[Platform])
-Explicação: Identifica e exibe a plataforma com o maior volume de vendas globais.
+Ainda na página atual de Visão Geral das Vendas, tem um botão para alternar as visualizações para Gênero do Jogo, mudando alguns gráficos.
 
-3.3. Página: Análise por Gênero
-Objetivo: Verificar quais gêneros de jogos são os mais lucrativos.
-Gráficos e Elementos:
-Gráfico de Colunas – Vendas por Gênero:
+Os gráficos presentes após a mudança são:
+
+<b>Grafico de Colunas Empilhadas</b>
+
+Exibe o Total de Vendas por Gênero
+
 Eixo X: Genre
-Eixo Y: SUM(Global_Sales)
-Explicação: Compara o total de vendas entre os diferentes gêneros.
 
-Gráfico de Barras Empilhadas – Vendas por Gênero e Região:
+Eixo Y: Total Vendas Globais (Medida)
+
+<hr>
+
+<b>Gráfico de Barras Empilhadas</b>
+
+Exibe as Vendas Totais por Gênero de Jogo
+
 Eixo Y: Genre
-Valores: NA_Sales, EU_Sales, JP_Sales, Other_Sales
-Explicação: Analisa a distribuição de vendas dos gêneros por região.
 
-Card – Gênero Mais Vendido:
-Medida DAX:
+Eixo X: JP Sales, NA Sales, EU Sales, Ohther Sales
 
-DAX
-Copiar
-Editar
-GeneroMaisVendido = 
-VAR TabelaGeneros =
-    SUMMARIZE(
-        vgsales, 
-        vgsales[Genre],
-        "TotalVendas", SUM(vgsales[Global_Sales])
-    )
-VAR TopGenero =
-    TOPN(1, TabelaGeneros, [TotalVendas], DESC)
-RETURN
-    MAXX(TopGenero, vgsales[Genre])
-Explicação: Retorna o gênero com o maior volume de vendas.
+<hr>
 
-3.4. Página: Análise por Publicadora (Desenvolvedora)
-Objetivo: Identificar a publicadora/desenvolvedora com maior volume de vendas.
-Gráficos e Elementos:
-Gráfico de Barras – Top 10 Publicadoras:
-Eixo Y: Publisher (top 10)
-Eixo X: SUM(Global_Sales)
-Explicação: Exibe as publicadoras com maiores vendas.
+<b>Gráfico de Colunas Empilhadas</b>
 
-Tabela – Jogos Mais Vendidos por Publicadora:
-Colunas: Publisher, Name, Global_Sales
-Explicação: Lista os jogos mais vendidos para cada publicadora.
+Exibe o Rank por Gênero de Jogo
 
-Gráfico de Dispersão – Evolução das Publicadoras:
-Eixo X: Year
-Eixo Y: SUM(Global_Sales)
-Legenda: Publisher
-Explicação: Visualiza a performance das publicadoras ao longo dos anos.
+Eixo X: Genre
 
-Card – Publicadora Mais Vendida:
-Medida DAX:
+Eixo Y: Soma de Rank
 
-DAX
-Copiar
-Editar
-PublicadoraMaisVendida = 
-VAR TabelaPublicadoras =
-    SUMMARIZE(
-        vgsales,
-        vgsales[Publisher],
-        "TotalVendas", SUM(vgsales[Global_Sales])
-    )
-VAR TopPublicadora =
-    TOPN(1, TabelaPublicadoras, [TotalVendas], DESC)
-RETURN
-    MAXX(TopPublicadora, vgsales[Publisher])
-Explicação: Identifica e exibe a publicadora com o maior volume de vendas.
+<hr>
 
-3.5. Página: Evolução Temporal
-Objetivo: Analisar tendências de vendas ao longo dos anos.
-Gráficos e Elementos:
-Gráfico de Linhas – Vendas Globais ao Longo dos Anos:
-Eixo X: Year
-Eixo Y: SUM(Global_Sales)
-Explicação: Exibe a evolução total do mercado de videogames.
+A página atual também conta com dois filtros. Podendo filtrar os gráficos por ano e por nome do Jogo. Os gráficos utilizados foram Segmentação de Dados.
 
-Gráfico de Barras Empilhadas – Vendas por Ano e Gênero:
-Eixo X: Year
-Eixo Y: SUM(Global_Sales)
-Pilha: Genre
-Explicação: Permite visualizar como os diferentes gêneros evoluíram ao longo do tempo.
+<hr>
 
-Card – Ano com Maior Venda:
-Medida DAX:
+<h2>Análise por Desenvolvedora</h2>
 
-DAX
-Copiar
-Editar
-AnoMaisVendas = 
+Essa página traz análises gerais e detalhadas das Desenvolvedoras dos jogos
+
+<hr>
+
+<b>Gráfico de Barras Empilhadas</b>
+
+Exibe as vendas totais por Desenvolvedoras.
+
+Eixo Y: Publisher
+
+Eixo X: Total Vendas Globais (Medida)
+
+<hr>
+
+<b>Tabela</b>
+
+Exibe várias inoformações em um único Gráfico.
+
+Colunas: Desenvolvedora, Jogo, Vendas Totais (Medida)
+
+<hr>
+
+<b>Gráfico de Dispersão</b>
+
+Exibe a Quantidade de publicação de jogos por ano e as Vendas totais por ano.
+
+Eixo X: Year(Ano)
+
+Eixo Y: Contagem de Publisher
+
+<hr>
+
+<b>Cartão</b>
+
+Exibe o Ano com mais Vendas
+
+Medida DAX presente no gráfico:
+
+```python
+Ano Mais Vendas = 
 VAR TabelaAnos = 
     SUMMARIZE(
         vgsales,
@@ -296,17 +266,46 @@ VAR TopAno =
     TOPN(1, TabelaAnos, [TotalVendas], DESC)
 RETURN
     MAXX(TopAno, vgsales[Year])
-Explicação: Retorna o ano com o maior volume de vendas globais.
+```
 
-3.6. Página: Regiões de Venda
-Objetivo: Comparar o desempenho de vendas em diferentes regiões.
-Gráficos e Elementos:
-Gráfico de Mapa – Vendas por Região:
-Localização: Região (NA, EU, JP, Other)
-Tamanho do marcador: SUM(Global_Sales)
-Explicação: Demonstra a distribuição geográfica das vendas.
+<hr>
 
-Gráfico de Barras – Top 10 Jogos por Região:
-Eixo Y: Name
-Eixo X: Vendas em cada região (NA_Sales, EU_Sales, etc.)
-Explicação: Identifica os jogos mais vendidos em cada região.
+<b>Cartão</b>
+
+Exibe a Desenvolvedora com mais vendas.
+
+Medida DAX presente no gráfico:
+
+```python
+Desenvolvedora Mais Vendida = 
+VAR TabelaPublicadoras =
+    SUMMARIZE(
+        vgsales,
+        vgsales[Publisher],
+        "TotalVendas", SUM(vgsales[Global_Sales])
+    )
+VAR TopPublicadora =
+    TOPN(1, TabelaPublicadoras, [TotalVendas], DESC)
+RETURN
+    MAXX(TopPublicadora, vgsales[Publisher])
+```
+
+<hr>
+
+<h1>Considerações Técnicas</h1>
+
+<h4><b>Fontes de Dados e Transformação</b></h4>
+
+<hr>
+
+<b>Origem dos Dados:</b> 
+
+O arquivo vgsales.csv foi carregado direto no Power BI.
+
+<b>Preparação dos Dados:</b> 
+
+Foram realizadas transformações para corrigir tipos de dados, tratamento de valores nulos, extração de caracteres, transformação de caracteres, tratamento de vazios.
+
+<b>Interatividade:</b>
+
+Cada página possui filtros (slicers) que permitem ao usuário segmentar os dados por ano, plataforma, gênero ou desenvolvedora.
