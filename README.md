@@ -72,7 +72,7 @@ O relatório é dividido em três páginas contendo análises específicas.
 
 - Gráficos e Elementos contidos na página:
 
-Card – Total de Vendas Globais
+<b>Card – Total de Vendas Globais</b>
 
 Medida DAX contida no gráfico:
 
@@ -80,15 +80,88 @@ Medida DAX contida no gráfico:
 TotalVendasGlobais = SUM(vgsales[Global_Sales])
 #Exibe a soma total de todas as vendas globais.
 ```
-Gráfico de Barras – Top 10 Jogos Mais Vendidos:
-Eixo Y: Name (jogos filtrados para os top 10)
-Eixo X: SUM(Global_Sales)
-Explicação: Exibe os jogos com maior volume de vendas.
 
-Gráfico de Pizza – Participação de Mercado por Plataforma:
+<hr>
+
+<b>ard - Gênero de Jogo mais Vendido</b>
+
+Exibe o Gênero de jogo mais vendido
+
+Medida contida no Gráfico:
+
+```python
+Genero Mais Vendido = 
+VAR TabelaGeneros =
+    SUMMARIZE(
+        vgsales, 
+        vgsales[Genre],
+        "TotalVendas", SUM(vgsales[Global_Sales])
+    )
+VAR TopGenero =
+    TOPN(1, TabelaGeneros, [TotalVendas], DESC)
+RETURN
+    MAXX(TopGenero, vgsales[Genre])
+# Exibe o gênero de jogo mais vendido
+```
+
+<hr>
+
+<b>Card - Plataforma de Console Mais vendido</b>
+
+Exibe a plataforma de console mais vendida
+
+Medida contida no Gráfico:
+
+```python
+Plataforma Mais Vendida = 
+VAR TabelaPlataformas = 
+    SUMMARIZE(
+        vgsales, 
+        vgsales[Platform],
+        "TotalVendas", SUM(vgsales[Global_Sales])
+    )
+VAR TopPlataforma = 
+    TOPN(1, TabelaPlataformas, [TotalVendas], DESC)
+RETURN
+    MAXX(TopPlataforma, vgsales[Platform])
+#Exibe a plataforma de console mais vendida
+```
+
+<hr>
+
+<b>Gráfico de Barras Empilhadas – Total de Vendas Por Nome do Jogo</b>
+
+Exibe os jogos com maior volume de vendas.
+
+Eixo Y: Name 
+
+Eixo X: SUM (Global_Sales)
+
+<hr>
+
+<b>Gráfico de Barras Empilhadas - Venda de Plataformas por Região</b>
+
+Exibe as plataformas com maior volume de vendas.
+
+Eixo Y: Platform
+
+Eixo X: NA Sales, EU Sales, JP Sales, Other Sales
+
+<hr>
+
+<b>Gráfico de Linha - Vendas Totais por Ano</b>
+
+
+
+Gráfico de Pizza – Participação de Mercado por Plataforma
+
+Demonstra o percentual de vendas de cada plataforma.
+
 Fatias: Platform
+
 Valores: SUM(Global_Sales)
-Explicação: Demonstra o percentual de vendas de cada plataforma.
+
+
 
 3.2. Página: Análise por Plataforma
 Objetivo: Comparar o desempenho das plataformas.
